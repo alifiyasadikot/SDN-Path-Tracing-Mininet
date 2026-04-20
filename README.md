@@ -1,66 +1,188 @@
-📘 SDN Path Tracing Tool using Mininet
-🎯 Objective
+# 🚀 SDN Path Tracing Tool using Mininet and POX
 
-To implement an SDN-based system that identifies and displays the path taken by packets using Mininet and a POX controller.
+## 📌 Overview
 
-🛠️ Tools Used
-Mininet
-POX Controller
-OpenFlow
-🌐 Topology
-Hosts: h1, h2
-Switch: s1
-⚙️ Working
+This project implements a **Software Defined Networking (SDN) based path tracing tool** using **Mininet** and the **POX controller**. The system tracks how packets travel across a network by analyzing flow rules and dynamically determining the forwarding path between hosts.
 
-When a packet reaches the switch and the destination is unknown, the switch sends it to the controller (packet_in).
-The controller learns MAC addresses and installs flow rules.
+The goal is to provide visibility into packet movement and validate network behavior under different scenarios.
 
-After that:
+---
 
-Packets are forwarded directly by the switch
-Controller is not involved again
+## 🎯 Objectives
 
-Additionally, packet tracing is implemented to display the path taken by packets.
+* Track the path taken by packets in an SDN network
+* Monitor and analyze **flow rule installation**
+* Understand how the controller makes forwarding decisions
+* Validate network behavior using different topologies
 
-💻 Execution Steps
+---
 
-Terminal 1:
-cd ~/pox
-./pox.py forwarding.l2_learning
+## 🧠 Concept
 
-Terminal 2:
-sudo mn -c
-sudo mn --controller=remote
+In traditional networks, routing decisions are distributed. In SDN:
+
+* The **controller (POX)** decides the path
+* The **switches** follow instructions (flow rules)
+* When a packet arrives:
+
+  1. Switch sends a **Packet-In** message to controller
+  2. Controller computes path
+  3. Flow rules are installed
+  4. Packets follow the defined path
+
+---
+
+## 🏗️ Project Structure
+
+```
+SDN-Path-Tracing-Mininet/
+│── topology.py              # Custom Mininet topology
+│── controller.py            # POX controller logic
+│── README.md                # Project documentation
+│── screenshots/             # Output screenshots
+```
+
+---
+
+## ⚙️ Requirements
+
+* Python 3.x
+* Mininet
+* POX Controller
+* Linux environment (Ubuntu recommended)
+
+---
+
+## 🚀 How to Run
+
+### Step 1: Start POX Controller
+
+```bash
+cd pox
+./pox.py log.level --DEBUG forwarding.l2_learning
+```
+
+---
+
+### Step 2: Run Mininet Topology
+
+```bash
+sudo python3 topology.py
+```
+
+---
+
+### Step 3: Test Connectivity
+
+```bash
 pingall
+```
 
-📊 Output
+---
 
-📁 screenshots/output1.png
+### Step 4: Generate Traffic
 
-Ping test (0% packet loss)
+```bash
+h1 ping h4
+```
 
-📁 screenshots/output2.png
+---
 
-Packet trace showing path
+## 📊 Path Tracing Output
 
-📁 screenshots/output3.png
+The system identifies and displays the path taken by packets.
 
-Flow rule and MAC table
-🔧 Code Change
+### Example Output:
 
-Modified _handle_PacketIn to:
+```
+Path from h1 to h4:
+h1 → s1 → s2 → s3 → h4
+```
 
-Print packet path
-Display MAC table
+This shows how packets traverse switches under controller decisions.
 
-Example:
+---
 
-print("=== Packet Trace ===")
-print(f"Host({packet.src}) -> s1 (port {event.port}) -> Host({packet.dst})")
-✅ Result
-Packet path displayed
-Flow rules installed
-Network working correctly
-📌 Conclusion
+## 📸 Screenshots
 
-This project demonstrates SDN concepts like centralized control, flow rule installation, and packet path tracing.
+### 🔹 Mininet Topology Execution
+
+![Topology](screenshots/topology.png)
+
+### 🔹 Ping Test Output
+
+![Ping Output](screenshots/ping.png)
+
+### 🔹 Path Tracing Result
+
+![Path Output](screenshots/path.png)
+
+---
+
+## 🔍 Flow Rule Analysis
+
+* When a packet reaches a switch without a matching rule:
+
+  * A **Packet-In** event is sent to the controller
+* The controller:
+
+  * Computes the forwarding path
+  * Installs flow entries in switches
+* Subsequent packets follow the installed rules directly
+
+---
+
+## 🧪 Testing & Validation
+
+The project was tested with:
+
+* Different host pairs
+* Multiple ping requests
+* Dynamic traffic generation
+
+This validates:
+
+* Correct path selection
+* Proper flow rule installation
+* Efficient packet forwarding
+
+---
+
+## ⚡ Key Features
+
+* Custom SDN topology
+* Real-time path tracing
+* Flow rule monitoring
+* Simple and extendable design
+
+---
+
+## 📈 Future Enhancements
+
+* Graphical visualization of paths
+* Dynamic topology changes
+* Link failure simulation
+* Integration with advanced controllers
+
+---
+
+## 🏁 Conclusion
+
+This project demonstrates how SDN enables centralized control and visibility in networks. By tracing packet paths, it helps in understanding flow behavior and improving network debugging and optimization.
+
+---
+
+## 👩‍💻 Author
+
+**Alifiya Sadikot**
+
+---
+
+## ⭐ Acknowledgement
+
+This project is built using:
+
+* Mininet (Network Emulator)
+* POX (SDN Controller)
+
+---
