@@ -1,12 +1,44 @@
-Terminal 1:
-cd ~/pox
-./pox.py forwarding.l2_learning
 
-Terminal 2:
+SDN PATH TRACING PROJECT – COMMANDS
+
+CLEAN SYSTEM (run before starting)
+
 sudo mn -c
-sudo mn --controller=remote
+sudo killall pox.py
+
+START POX CONTROLLER (Terminal 1)
+
+cd ~/pox
+./pox.py forwarding.l2_learning misc.path_tracer
+
+START MININET (Terminal 2)
+
+sudo mn --controller=remote --topo linear,4
+
+TEST NETWORK
+
 pingall
 
-To edit code:
-nano ~/pox/forwarding/l2_learning.py
-Search: _handle_PacketIn
+TEST END-TO-END COMMUNICATION
+
+h1 ping -c 3 h4
+
+OPTIONAL (IF SOMETHING BREAKS)
+
+sudo mn -c
+sudo killall pox.py
+
+VIEW PATH OUTPUT
+
+Check Terminal 1 (POX terminal)
+You should see lines like:
+
+s1: ...
+s2: ...
+s3: ...
+s4: ...
+PATH: h1 -> s1 -> s2 -> s3 -> s4 -> h4
+
+EXIT MININET
+
+exit
