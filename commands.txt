@@ -1,0 +1,12 @@
+Terminal 1:
+cd ~/pox
+./pox.py forwarding.l2_learning
+
+Terminal 2:
+sudo mn -c
+sudo mn --controller=remote
+pingall
+
+To edit code:
+nano ~/pox/forwarding/l2_learning.py
+Search: _handle_PacketIn
